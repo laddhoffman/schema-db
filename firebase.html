@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ladd Firebase test</title>
+
+<script src="https://www.gstatic.com/firebasejs/3.8.0/firebase.js"></script>
+
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDxsQNENR2ebg7BuY-NAi-tMK5QIVRyMJo",
+    authDomain: "schema-db.firebaseapp.com",
+    databaseURL: "https://schema-db.firebaseio.com",
+    projectId: "schema-db",
+    storageBucket: "schema-db.appspot.com",
+    messagingSenderId: "670442853615"
+  };
+  firebase.initializeApp(config);
+</script>
+
+<script src="https://cdn.firebase.com/libs/firebaseui/1.0.1/firebaseui.js"></script>
+
+<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/1.0.1/firebaseui.css" />
+
+ <script type="text/javascript">
+      initApp = function() {
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+            var displayName = user.displayName;
+            var email = user.email;
+            var emailVerified = user.emailVerified;
+            var photoURL = user.photoURL;
+            var uid = user.uid;
+            var providerData = user.providerData;
+            user.getToken().then(function(accessToken) {
+              document.getElementById('sign-in-status').textContent = 'Signed in';
+              document.getElementById('sign-in').textContent = 'Sign out';
+              document.getElementById('account-details').textContent = JSON.stringify({
+                displayName: displayName,
+                email: email,
+                emailVerified: emailVerified,
+                photoURL: photoURL,
+                uid: uid,
+                accessToken: accessToken,
+                providerData: providerData
+              }, null, '  ');
+            });
+          } else {
+            // User is signed out.
+            document.getElementById('sign-in-status').textContent = 'Signed out';
+            document.getElementById('sign-in').textContent = 'Sign in';
+            document.getElementById('account-details').textContent = 'null';
+          }
+        }, function(error) {
+          console.log(error);
+        });
+      };
+
+      window.addEventListener('load', function() {
+        initApp()
+      });
+    </script>
+
+<script>
+
+// Get a reference to the database service
+  var database = firebase.database();
+
+</script>
+
+<script src="js/jsoneditor.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Font Awesome icons (Bootstrap, Foundation, and jQueryUI also supported) -->
+<link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css'>
+
+<style>
+
+body {
+    margin: 30px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+    <div id="sign-in-status"></div>
+    <div id="sign-in"></div>
+    <div id="account-details"></div>
+
+    <div id="editor_holder"></div>
+
+</body>
+
+<script>
+
+// Set default options
+JSONEditor.defaults.options.theme = 'bootstrap3';
+JSONEditor.defaults.iconlib = 'fontawesome4';
+
+// Initialize the editor
+var editor = new JSONEditor(document.getElementById("editor_holder"),{
+
+    ajax: true,
+
+    schema: {
+        '$ref': 'metaschema.json',
+        // '$ref': 'schema/Setup.json?rev=1',
+    },
+
+/*
+  schema: {
+      type: "object",
+      properties: {
+          name: { "type": "string" }
+      }
+  }
+*/
+});
+
+// Set the value
+/*
+editor.setValue({
+    name: "John Smith"
+});
+
+// Get the value
+var data = editor.getValue();
+console.log(data.name); // "John Smith"
+
+// Validate
+var errors = editor.validate();
+if(errors.length) {
+  // Not valid
+}
+*/
+
+// Listen for changes
+editor.on("change",  function() {
+  // Do something...
+});
+
+</script>
+
+</html>
+
